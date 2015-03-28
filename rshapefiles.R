@@ -1,0 +1,12 @@
+library(spatstat)
+library(maptools)
+library(sp)
+x <- readShapeSpatial(file.choose())
+class(x)
+#SpatialPolygonsDataFrame
+y <- as(x, 'SpatialPolygons')
+df <- slot(x, 'data')
+regions <- slot(y, 'polygons')
+regions <- lapply(regions, function (x) {SpatialPolygons(list(x))})
+windows <- lapply(regions, as.owin)
+te <- tess(tiles=windows)
